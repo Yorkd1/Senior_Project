@@ -12,7 +12,7 @@ Here is a video demonstrasting the US visual and walkthrough of the code:
 
 [US 2020-2022 Demo Video](https://youtu.be/BSfPIFSPDIo)
 
-# Data Analysis Results
+# Data Analysis Walkthrough
 
 When you start the program, we are given a visual of the US states and the map of thier population density. I wanted this to be the first thing users saw to give them an idea how which states had the greater populations in 2020. When users select the visuals for COVID-19 Cases by State or by County, they can see that the majority of cases and even deaths will be greatly affected by the population density that we see from the default map. 
 
