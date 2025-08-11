@@ -4,9 +4,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-# ──────────────────────────────────────────────────────────────────────────────
+
 # Data loading & preprocessing
-# ──────────────────────────────────────────────────────────────────────────────
 
 # Load COVID‑19 data
 covid_df = pd.read_csv("covid19.csv", parse_dates=["date"])
@@ -39,9 +38,7 @@ state_abbrev = {
 
 covid_df["state_abbrev"] = covid_df["state"].map(state_abbrev)
 
-# ──────────────────────────────────────────────────────────────────────────────
 # State‑level dataset
-# ──────────────────────────────────────────────────────────────────────────────
 state_df = (
     covid_df.dropna(subset=["state_abbrev"])
             .groupby(["state_abbrev", "date"], as_index=False)[["cases", "deaths"]]
@@ -49,12 +46,11 @@ state_df = (
             .sort_values("date")
 )
 
-# ──────────────────────────────────────────────────────────────────────────────
+
 # County‑level dataset
-# ──────────────────────────────────────────────────────────────────────────────
 county_sorted = (
     covid_df.dropna(subset=["fips"]).copy()
-              .sort_values(["date", "fips"], kind="mergesort")  # stable sort
+              .sort_values(["date", "fips"], kind="mergesort") 
               .reset_index(drop=True)
 )
 
@@ -63,20 +59,16 @@ county_df_sorted = (
                  .sum()
 )
 
-# Add string version of the date for the animation frame – this guarantees
+# Adds string version of the date for the animation frame. This guarantees
 # that Plotly shows the very first frame for (2020‑01‑21)
 county_df_sorted["date_str"] = county_df_sorted["date"].dt.strftime("%Y-%m-%d")
 
-# ──────────────────────────────────────────────────────────────────────────────
-#  Population data
-# ──────────────────────────────────────────────────────────────────────────────
 
+#  Population data
 pop_df = pd.read_csv("us_pop_by_state.csv")
 
-# ──────────────────────────────────────────────────────────────────────────────
-#  Figure factories
-# ──────────────────────────────────────────────────────────────────────────────
 
+#  Figure factories
 def get_covid_state_figure() -> go.Figure:
     """Animated state‑level COVID map (cases & deaths)."""
     df = state_df.copy()
@@ -170,10 +162,8 @@ def get_population_figure() -> go.Figure:
     )
     return fig
 
-# ──────────────────────────────────────────────────────────────────────────────
-#  Dash app
-# ──────────────────────────────────────────────────────────────────────────────
 
+#  Dash app
 app = dash.Dash(__name__)
 app.title = "US Heatmaps"
 
